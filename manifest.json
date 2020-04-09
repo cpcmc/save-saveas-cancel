@@ -6,12 +6,10 @@
     "scripts": ["background.js"],
     "persistent": false
   },
-  "content_scripts": [
-      {
-          "matches": ["<all_urls>"],
-          "js": ["content.js"]
-      }
-  ],
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["content.js"]
+  }],
   "permissions": ["downloads", "downloads.shelf", "tabs"],
   "icons": {
     "16": "images/get_started16.png",
