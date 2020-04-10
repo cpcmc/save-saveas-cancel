@@ -1,3 +1,11 @@
-# Run, Save or Cancel
+# "save or "save as"
 
-This Chrome Extension is non-functional because **chrome.downloads.download with saveAs: false** does not override a user's **"Ask where to save each file before downloading" setting**.
+## what it is
+
+this chrome extension allows a user to choose whether to "save", "save as" or "cancel" a download
+
+## how it works
+
+after clicking a link on a webpage a popup informs the user of the file's name and size and the options to "save", "save as" or "cancel" the download
+
+## screenshot
