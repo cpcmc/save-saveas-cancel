@@ -1,61 +1,71 @@
 var current_url = "";
-var run_clicked = false;
 var save_clicked = false;
+var saveas_clicked = false;
 var cancel_clicked = false;
 var bar_active = false;
-var to_be_deleted = [];
 
 chrome.downloads.onCreated.addListener(function(downloadItem) {
-  console.log(downloadItem);
+  console.log(downloadItem); //FIXME
+
+  //not an executable file
   if (!downloadItem.finalUrl.endsWith(".exe")) {
     chrome.downloads.setShelfEnabled(true);
     return;
   }
 
+  //a certain link was clicked
   if (!bar_active) {
     chrome.downloads.setShelfEnabled(false);
     chrome.downloads.cancel(downloadItem.id);
     current_url = downloadItem.url;
-    chrome.tabs.query({
-      active: true,
-      currentWindow: true
-    }, function(tabs) {
-      chrome.tabs.sendMessage(tabs[0].id, {
-        "name": "create-div"
+    var filename_list = downloadItem.url.split("/")
+    var filename = filename_list[filename_list.length - 1];
+    var file_size = downloadItem.fileSize;
+    chrome.downloads.getFileIcon(downloadItem.id, function(iconURL) {
+      chrome.tabs.query({
+        active: true,
+        currentWindow: true
+      }, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, {
+          "msgName": "create-div",
+          "fileName": filename,
+          "fileSize": file_size,
+          "iconUrl": iconURL
+        });
       });
     });
     bar_active = true;
     return;
   }
 
-  if (!run_clicked && !save_clicked) {
-    chrome.downloads.setShelfEnabled(false);
+  //another link was clicked
+  if (!save_clicked && !saveas_clicked) {
+    //chrome.downloads.setShelfEnabled(false);
     chrome.downloads.cancel(downloadItem.id);
     return;
   }
 
   //normal download
-  run_clicked = false;
+  console.log("normal download")
+  chrome.downloads.setShelfEnabled(true);
   save_clicked = false;
+  saveas_clicked = false;
 });
 
 chrome.runtime.onMessage.addListener(function(message) {
-  if (message.name == "run-clicked") {
-    run_clicked = true;
+  if (message.name == "save-clicked") {
+    save_clicked = true;
     chrome.downloads.download({
       "url": current_url
     });
     return;
   }
 
-  if (message.name == "save-clicked") {
-    save_clicked = true;
+  if (message.name == "saveas-clicked") {
+    saveas_clicked = true;
     chrome.downloads.download({
-      "url": current_url
-    }, function(downloadId) {
-      if (downloadId != undefined)
-        current_url = "";
-      bar_active = false;
+      "url": current_url,
+      "saveAs": true
     });
     return;
   }
@@ -64,5 +74,21 @@ chrome.runtime.onMessage.addListener(function(message) {
     current_url = "";
     bar_active = false;
     return;
+  }
+});
+
+chrome.downloads.onChanged.addListener(function(downloadDelta) {
+  console.log(downloadDelta);
+  if ("filename" in downloadDelta) {
+    chrome.tabs.query({
+      active: true,
+      currentWindow: true
+    }, function(tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, {
+        "msgName": "close-bar"
+      });
+    });
+    current_url = "";
+    bar_active = false;
   }
 });
