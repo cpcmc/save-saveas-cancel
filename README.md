@@ -1,4 +1,4 @@
-# "save or "save as"
+# "save", "save as" or "cancel"
 
 ## what it is
 
