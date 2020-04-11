@@ -6,7 +6,7 @@ This Chrome Extension allows a User to choose whether to Save | SaveAs | Cancel 
 
 ## How It Works
 
-After clicking a Link on a Webpage a Popup informs the User of the File's Name and Size and offers the Options to Save | SaveAs | Cancel the Download.
+After clicking a Link on a Webpage a Popup on the top-right of the Screen informs the User of the File's Name and Size and offers the Options to Save | SaveAs | Cancel the Download.
 
 ## Screenshot
 
