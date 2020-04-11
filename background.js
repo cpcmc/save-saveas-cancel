@@ -2,21 +2,14 @@ var current_url = "";
 var save_clicked = false;
 var saveas_clicked = false;
 var cancel_clicked = false;
-var bar_active = false;
+var popup_active = false;
 
 chrome.downloads.onCreated.addListener(function(downloadItem) {
-  console.log(downloadItem); //FIXME
-
-  //not an executable file
-  if (!downloadItem.finalUrl.endsWith(".exe")) {
-    chrome.downloads.setShelfEnabled(true);
-    return;
-  }
-
   //a certain link was clicked
-  if (!bar_active) {
-    chrome.downloads.setShelfEnabled(false);
+  if (!popup_active) {
+    //cancel download
     chrome.downloads.cancel(downloadItem.id);
+    //send msg to draw popup
     current_url = downloadItem.url;
     var filename_list = downloadItem.url.split("/")
     var filename = filename_list[filename_list.length - 1];
@@ -27,59 +20,65 @@ chrome.downloads.onCreated.addListener(function(downloadItem) {
         currentWindow: true
       }, function(tabs) {
         chrome.tabs.sendMessage(tabs[0].id, {
-          "msgName": "create-div",
+          "msgName": "create-popup",
           "fileName": filename,
-          "fileSize": file_size,
-          "iconUrl": iconURL
+          "fileSize": file_size
         });
       });
     });
-    bar_active = true;
+    popup_active = true;
     return;
   }
 
-  //another link was clicked
+  //a different link was clicked
   if (!save_clicked && !saveas_clicked) {
-    //chrome.downloads.setShelfEnabled(false);
+    //cancel download
     chrome.downloads.cancel(downloadItem.id);
     return;
   }
 
-  //normal download
-  console.log("normal download")
-  chrome.downloads.setShelfEnabled(true);
-  save_clicked = false;
-  saveas_clicked = false;
+  //either save or saveas clicked
+  if (save_clicked || saveas_clicked) {
+    //allow download
+    save_clicked = false;
+    saveas_clicked = false;
+  }
 });
 
 chrome.runtime.onMessage.addListener(function(message) {
+  //save clicked
   if (message.name == "save-clicked") {
     save_clicked = true;
+    //save download
     chrome.downloads.download({
       "url": current_url
     });
     return;
   }
 
+  //saveas clicked
   if (message.name == "saveas-clicked") {
     saveas_clicked = true;
+    //saveas download
     chrome.downloads.download({
       "url": current_url,
-      "saveAs": true
+      "saveAs": true //force saveas dialog
     });
     return;
   }
 
+  //cancel clicked
   if (message.name == "cancel-clicked") {
     current_url = "";
-    bar_active = false;
+    popup_active = false;
     return;
   }
 });
 
 chrome.downloads.onChanged.addListener(function(downloadDelta) {
-  console.log(downloadDelta);
-  if ("filename" in downloadDelta) {
+  //one or more properties of download changed
+  if ("filename" in downloadDelta) { //save or saveas + save
+    //send msg to delete popup
     chrome.tabs.query({
       active: true,
       currentWindow: true
@@ -89,6 +88,6 @@ chrome.downloads.onChanged.addListener(function(downloadDelta) {
       });
     });
     current_url = "";
-    bar_active = false;
+    popup_active = false;
   }
 });

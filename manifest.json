@@ -1,7 +1,7 @@
 {
-  "name": "Run/Save/Cancel",
+  "name": "save | saveas | cancel",
   "version": "1.0",
-  "description": "Allows the user to choose whether to Run, Save or Cancel a download!",
+  "description": "a chrome extension which allows the user to choose whether to save | save as | cancel any download",
   "background": {
     "scripts": ["background.js"],
     "persistent": false
@@ -10,7 +10,7 @@
     "matches": ["<all_urls>"],
     "js": ["content.js"]
   }],
-  "permissions": ["downloads", "downloads.shelf", "tabs"],
+  "permissions": ["tabs", "downloads"],
   "icons": {
     "16": "images/download96.png",
     "32": "images/download96.png",
