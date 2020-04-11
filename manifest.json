@@ -1,7 +1,7 @@
 {
-  "name": "save | saveas | cancel",
+  "name": "Save | SaveAs | Cancel",
   "version": "1.0",
-  "description": "a chrome extension which allows the user to choose whether to save | save as | cancel any download",
+  "description": "A Chrome Extension which allows the User to choose whether to Save | SaveAs | Cancel any Download.",
   "background": {
     "scripts": ["background.js"],
     "persistent": false
