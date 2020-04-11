@@ -1,11 +1,21 @@
-# save | saveas | cancel
+# Save | SaveAs | Cancel
 
-## what it is
+## What It Is
 
-this chrome extension allows a user to choose whether to "save", "save as" or "cancel" a download
+This Chrome Extension allows a User to choose whether to Save | SaveAs | Cancel a Download.
 
-## how it works
+## How It Works
 
-after clicking a link on a webpage a popup informs the user of the file's name and size and offers the options to "save", "save as" or "cancel" the download
+After clicking a Link on a Webpage a Popup informs the User of the File's Name and Size and offers the Options to Save | SaveAs | Cancel the Download.
 
-## screenshot
+## Screenshot
+
+![Save | SaveAs | Cancel](./images/screenshot.png)
+
+## How To Install It
+
+- Download the Files.
+- Navigate to chrome://extensions/.
+- Activate Developer Mode.
+- Click on Load Unpacked.
+- Select the Folder you just downloaded.
