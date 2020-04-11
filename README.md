@@ -1,4 +1,4 @@
-# "save", "save as" or "cancel"
+# save|saveas|cancel
 
 ## what it is
 
