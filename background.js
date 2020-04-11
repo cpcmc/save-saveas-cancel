@@ -7,6 +7,7 @@ var popup_active = false;
 chrome.downloads.onCreated.addListener(function(downloadItem) {
   //a certain link was clicked
   if (!popup_active) {
+    chrome.downloads.setShelfEnabled(false);
     //cancel download
     chrome.downloads.cancel(downloadItem.id);
     //send msg to draw popup
@@ -32,6 +33,7 @@ chrome.downloads.onCreated.addListener(function(downloadItem) {
 
   //a different link was clicked
   if (!save_clicked && !saveas_clicked) {
+    chrome.downloads.setShelfEnabled(false);
     //cancel download
     chrome.downloads.cancel(downloadItem.id);
     return;
@@ -39,6 +41,7 @@ chrome.downloads.onCreated.addListener(function(downloadItem) {
 
   //either save or saveas clicked
   if (save_clicked || saveas_clicked) {
+    chrome.downloads.setShelfEnabled(true);
     //allow download
     save_clicked = false;
     saveas_clicked = false;

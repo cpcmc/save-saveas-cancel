@@ -10,7 +10,7 @@
     "matches": ["<all_urls>"],
     "js": ["content.js"]
   }],
-  "permissions": ["tabs", "downloads"],
+  "permissions": ["tabs", "downloads", "downloads.shelf"],
   "icons": {
     "16": "images/download96.png",
     "32": "images/download96.png",
