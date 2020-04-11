@@ -1,4 +1,4 @@
-# save|saveas|cancel
+# save | saveas | cancel
 
 ## what it is
 
